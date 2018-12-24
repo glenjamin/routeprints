@@ -1,0 +1,17 @@
+{
+  "name": "routeprints",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "typecheck": "tsc"
+  },
+  "author": "Glen Mailer <glen@stainlessed.co.uk>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "typescript": "^3.2.2"
+  }
+}
