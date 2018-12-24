@@ -3,26 +3,29 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "start": "webpack-dev-server --hot-only --port 1987",
     "postinstall": "webpack",
     "typecheck": "tsc"
   },
   "author": "Glen Mailer <glen@stainlessed.co.uk>",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
+    "@types/webpack-env": "^1.13.6",
     "babel-loader": "^8.0.4",
+    "html-webpack-plugin": "^3.2.0",
     "prettier": "^1.15.3",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "typescript": "^3.2.2",
     "webpack": "^4.28.2",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14"
   },
-  "dependencies": {
-    "@babel/core": "^7.2.2"
-  }
+  "dependencies": {}
 }

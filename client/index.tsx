@@ -1,6 +1,16 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 
-import App from "./app";
+import App from "./App";
 
-ReactDOM.render(<App />, document.getElementById("app"));
+function render() {
+  ReactDOM.render(<App />, document.getElementById("app"));
+}
+
+render();
+
+if (module.hot) {
+  module.hot.accept("./App", () => {
+    render();
+  });
+}
