@@ -1,12 +1,14 @@
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const path = p => require("path").resolve(__dirname, p);
 
 const prod = process.env.NODE_ENV == "production";
 
-const outputDir = "";
+const outputDir = path("./dist");
 
 const stats = {
   cachedAssets: false,
@@ -36,14 +38,28 @@ module.exports = {
         options: {
           cacheDirectory: true
         }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          prod ? MiniCssExtractPlugin.loader : "style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              implementation: require("sass")
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
+    new CleanWebpackPlugin([outputDir]),
     new HtmlWebpackPlugin({
       template: path("client/index.html")
     }),
-    new CleanWebpackPlugin([outputDir])
+    new MiniCssExtractPlugin()
   ],
   optimization: {
     splitChunks: { chunks: "all" },
