@@ -4,6 +4,10 @@
     "jsx": "preserve",
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "typings/*"]
+    }
   }
 }

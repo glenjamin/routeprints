@@ -5,7 +5,8 @@
   "scripts": {
     "start": "webpack-dev-server --hot --hot-only --port 1987",
     "postinstall": "webpack",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "npm run typecheck"
   },
   "author": "Glen Mailer <glen@stainlessed.co.uk>",
   "license": "UNLICENSED",
@@ -15,7 +16,6 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/react": "^16.7.18",
-    "@types/react-bootstrap": "^0.32.15",
     "@types/react-dom": "^16.0.11",
     "@types/webpack-env": "^1.13.6",
     "babel-loader": "^8.0.4",
