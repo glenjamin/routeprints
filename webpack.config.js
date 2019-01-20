@@ -59,8 +59,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path("client/index.html")
     }),
-    new MiniCssExtractPlugin()
-  ],
+    new MiniCssExtractPlugin(),
+    prod &&
+      new webpack.NormalModuleReplacementPlugin(
+        /ErrorBoundary$/,
+        require.resolve("./client/components/ErrorBoundary.production.tsx")
+      )
+  ].filter(Boolean),
   optimization: {
     splitChunks: { chunks: "all" },
     runtimeChunk: "single"

@@ -5,6 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --hot-only --port 1987",
     "postinstall": "webpack",
+    "webpack-stats": "NODE_ENV=production webpack --json --profile --display verbose > stats.json",
     "typecheck": "tsc",
     "test": "npm run typecheck"
   },

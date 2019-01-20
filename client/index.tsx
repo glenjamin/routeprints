@@ -6,7 +6,7 @@ import { makeStore } from "./store";
 
 import "./styles.scss";
 
-import { App } from "./App";
+import { App } from "./components/App";
 
 const store = makeStore();
 
@@ -22,7 +22,18 @@ function render() {
 render();
 
 if (module.hot) {
-  module.hot.accept("./App", () => {
+  module.hot.accept("./components/App", () => {
     render();
   });
+}
+
+// Export some handy dev stuff
+declare global {
+  interface Window {
+    dev: any;
+  }
+}
+if (process.env.NODE_ENV !== "production") {
+  window.dev = {};
+  window.dev.store = store;
 }
