@@ -1,9 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 
-function Sidebar() {
-  return <p>Sidebar!</p>;
-}
+import { ConnectToStrava } from "./ConnectToStrava";
+
+type Props = {
+  strava: any;
+};
+
+const Sidebar: React.FC<Props> = ({ strava }) => {
+  return <div>{!strava ? <ConnectToStrava /> : <p>OK</p>}</div>;
+};
 
 function mapStateToProps(state: any) {
   return {
