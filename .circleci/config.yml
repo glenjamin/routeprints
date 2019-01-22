@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-{{ checksum "package-lock.json" }}
+            - npm-
+      - run:
+          name: install dependencies
+          command: npm ci
+      - save_cache:
+          key: npm-{{ checksum "package-lock.json" }}
+          paths:
+            - /root/.npm
+      - run:
+          name: run tests
+          command: npm test
+      - run:
+          name: production bundle
+          command: npm run bundle
+          environment:
+            NODE_ENV: production
+          when: on_success
+workflows:
+  version: 2
+  main:
+    jobs:
+      - test
