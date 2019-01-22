@@ -3,6 +3,7 @@ const querystring = require("querystring");
 
 const express = require("express");
 const linkto = require("linkto");
+const openerJsCallback = require("./opener-js-callback");
 
 const axios = require("axios");
 
@@ -18,7 +19,6 @@ const app = express();
 app.enable("trust proxy");
 
 app.use(linkto());
-app.use(require("./opener-js-callback"));
 
 /**
  * @param  {string} path
@@ -45,17 +45,30 @@ app.get("/strava/auth/connect", (req, res) => {
   );
 });
 
+/**
+ * @typedef {Object} OauthCallbackError
+ *
+ * @typedef {Object} OauthCallbackOk
+ */
+/**
+ * @param  {express.Response} res
+ * @param  {OauthCallbackError | OauthCallbackOk} data
+ * @return {void}
+ */
+function stravaOAuth2Callback(res, data) {
+  openerJsCallback(res, "stravaOAuth2Callback", data);
+}
+
 app.get("/strava/auth/callback", (req, res) => {
-  const callbackName = "stravaOAuth2Callback";
   if (req.query.error) {
-    res.openerJsCallback(callbackName, {
+    stravaOAuth2Callback(res, {
       error: "oauth_error",
       details: req.query.error
     });
     return;
   }
   if (req.query.scope != DESIRED_SCOPE) {
-    res.openerJsCallback(callbackName, {
+    stravaOAuth2Callback(res, {
       error: "oauth_wrong_scope",
       details: req.query.scope
     });
@@ -72,10 +85,10 @@ app.get("/strava/auth/callback", (req, res) => {
       })
     )
     .then(({ data }) => {
-      res.openerJsCallback(callbackName, data);
+      stravaOAuth2Callback(res, data);
     })
     .catch(err => {
-      return res.openerJsCallback(callbackName, {
+      return stravaOAuth2Callback(res, {
         error: "oauth_error",
         details: err.message
       });

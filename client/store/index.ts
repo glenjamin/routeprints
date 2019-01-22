@@ -1,8 +1,14 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import { createLogger } from "redux-logger";
+
 import { rootReducer } from "./reducer";
 
 export function makeStore() {
-  const store = createStore(rootReducer);
+  const logger = createLogger({
+    collapsed: true
+  });
+
+  const store = createStore(rootReducer, undefined, applyMiddleware(logger));
 
   if (module.hot) {
     module.hot.accept("./reducer", () => {
