@@ -69,7 +69,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path("client/index.html")
     }),
-    new MiniCssExtractPlugin(),
+    prod && new MiniCssExtractPlugin(),
     prod &&
       new webpack.NormalModuleReplacementPlugin(
         /ErrorBoundary$/,
