@@ -4,6 +4,9 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+/**
+ * @param {string} p
+ */
 const path = p => require("path").resolve(__dirname, p);
 
 const prod = process.env.NODE_ENV == "production";
@@ -81,6 +84,15 @@ module.exports = {
   stats,
   devServer: {
     stats,
-    overlay: true
+    overlay: true,
+    /**
+     * @param {import("express").Express} app
+     */
+    before: app => {
+      // Late bind the reference to the module
+      app.use((...args) => require("./server/app")(...args));
+      // So we can hack in auto reloading
+      require("./utils/watch-module-cache")(path("./server"));
+    }
   }
 };
