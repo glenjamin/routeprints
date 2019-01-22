@@ -73,7 +73,7 @@ module.exports = {
     prod &&
       new webpack.NormalModuleReplacementPlugin(
         /ErrorBoundary$/,
-        require.resolve("./client/components/ErrorBoundary.production.tsx")
+        require.resolve("../client/components/ErrorBoundary.production.tsx")
       )
   ].filter(Boolean),
   optimization: {
