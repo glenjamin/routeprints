@@ -3,6 +3,7 @@ import webpack from "webpack";
 import CleanWebpackPlugin from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
 
 import { Express } from "express";
 
@@ -65,17 +66,13 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin([outputDir]),
+    new CleanWebpackPlugin([outputDir], {
+      root: path(".")
+    }),
     new HtmlWebpackPlugin({
       template: path("client/index.html")
-    }),
-    prod && new MiniCssExtractPlugin(),
-    prod &&
-      new webpack.NormalModuleReplacementPlugin(
-        /ErrorBoundary$/,
-        require.resolve("../client/components/ErrorBoundary.production.tsx")
-      )
-  ].filter(Boolean),
+    })
+  ],
   optimization: {
     splitChunks: { chunks: "all" },
     runtimeChunk: "single"
@@ -92,3 +89,16 @@ module.exports = {
     }
   }
 };
+
+if (prod) {
+  module.exports.plugins.push(
+    new MiniCssExtractPlugin({
+      filename: prod ? "[name].[contenthash].css" : "[name].css"
+    }),
+    new OptimizeCssAssetsPlugin(),
+    new webpack.NormalModuleReplacementPlugin(
+      /ErrorBoundary$/,
+      require.resolve("../client/components/ErrorBoundary.production.tsx")
+    )
+  );
+}
