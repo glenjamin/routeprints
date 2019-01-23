@@ -1,7 +1,6 @@
 require("@babel/register")({
   only: [/\.ts$/],
-  extensions: [".ts"],
-  cache: true
+  extensions: [".ts"]
 });
 
 module.exports = require("./server/webpack.config");

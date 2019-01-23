@@ -18,4 +18,4 @@
 
 ## Running in production
 
-> TODO
+`NODE_ENV=production node server`

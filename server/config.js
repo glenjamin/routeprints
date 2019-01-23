@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const config = {
+  port: process.env.PORT || "1987",
   stravaBaseURL: "https://www.strava.com/",
   clientId: requireInProduction("CLIENT_ID"),
   clientSecret: requireInProduction("CLIENT_SECRET")

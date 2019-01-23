@@ -6,8 +6,8 @@
     "start": "webpack-dev-server --hot --hot-only --port 1987",
     "bundle": "webpack",
     "webpack-stats": "webpack --json --profile --display verbose > stats.json",
-    "typecheck": "tsc",
-    "test": "npm run typecheck"
+    "test": "npm run typecheck",
+    "typecheck": "tsc"
   },
   "author": "Glen Mailer <glen@stainlessed.co.uk>",
   "license": "UNLICENSED",
