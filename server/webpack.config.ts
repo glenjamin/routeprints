@@ -87,6 +87,9 @@ module.exports = {
       // So we can hack in auto reloading
       require("./utils/watch-module-cache")(path("./server"));
     }
+  },
+  performance: {
+    maxEntrypointSize: 1e6 // 1MB
   }
 };
 
