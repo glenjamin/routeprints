@@ -7,8 +7,8 @@ const http = require("http");
 
 const express = require("express");
 
-const app = require("./server/app");
-const config = require("./server/config");
+const app = require("./server/app").default;
+const config = require("./server/config").default;
 
 app.use(express.static("./dist"));
 

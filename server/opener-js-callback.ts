@@ -1,12 +1,11 @@
-const serialize = require("serialize-javascript");
+import express from "express";
+import serialize from "serialize-javascript";
 
-/**
- * @param  {import("express").Response} res
- * @param  {string} callbackName
- * @param  {object} data
- * @return {void}
- */
-module.exports = function openerJsCallback(res, callbackName, data) {
+export default function openerJsCallback(
+  res: express.Response,
+  callbackName: string,
+  data: object
+): void {
   res.set("X-Content-Type-Options", "nosniff");
   res.set("Content-Type", "text/html");
 
@@ -16,4 +15,4 @@ module.exports = function openerJsCallback(res, callbackName, data) {
     window.opener.${callbackName}(${serialize(data)});
     window.close();
   </script>`);
-};
+}

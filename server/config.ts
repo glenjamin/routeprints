@@ -7,11 +7,7 @@ const config = {
   clientSecret: requireInProduction("CLIENT_SECRET")
 };
 
-/**
- * @param  {string} envVarName
- * @return {string}
- */
-function requireInProduction(envVarName) {
+function requireInProduction(envVarName: string): string {
   const val = process.env[envVarName];
   if (val !== undefined) {
     return val;
@@ -22,4 +18,4 @@ function requireInProduction(envVarName) {
   return "";
 }
 
-module.exports = config;
+export default config;

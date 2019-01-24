@@ -1,13 +1,13 @@
-const { URL } = require("url");
-const querystring = require("querystring");
+import { URL } from "url";
+import querystring from "querystring";
 
-const express = require("express");
-const linkto = require("linkto");
-const openerJsCallback = require("./opener-js-callback");
+import express from "express";
+import linkto from "linkto";
+import openerJsCallback from "./opener-js-callback";
 
-const axios = require("axios");
+import axios from "axios";
 
-const config = require("./config");
+import config from "./config";
 
 const stravaClient = axios.create({
   baseURL: config.stravaBaseURL,
@@ -20,12 +20,10 @@ app.enable("trust proxy");
 
 app.use(linkto());
 
-/**
- * @param  {string} path
- * @param  {{[name: string]: string}} queryParams
- * @return {string}
- */
-function buildUrl(path, queryParams) {
+function buildUrl(
+  path: string,
+  queryParams: { [name: string]: string }
+): string {
   const url = new URL(path, config.stravaBaseURL);
   url.search = querystring.stringify(queryParams);
   return String(url);
@@ -45,17 +43,12 @@ app.get("/strava/auth/connect", (req, res) => {
   );
 });
 
-/**
- * @typedef {Object} OauthCallbackError
- *
- * @typedef {Object} OauthCallbackOk
- */
-/**
- * @param  {express.Response} res
- * @param  {OauthCallbackError | OauthCallbackOk} data
- * @return {void}
- */
-function stravaOAuth2Callback(res, data) {
+type OauthCallbackError = any;
+type OauthCallbackOk = any;
+function stravaOAuth2Callback(
+  res: express.Response,
+  data: OauthCallbackError | OauthCallbackOk
+): void {
   openerJsCallback(res, "stravaOAuth2Callback", data);
 }
 
@@ -95,4 +88,4 @@ app.get("/strava/auth/callback", (req, res) => {
     });
 });
 
-module.exports = app;
+export default app;

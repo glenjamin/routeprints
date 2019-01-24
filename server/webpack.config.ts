@@ -83,9 +83,9 @@ module.exports = {
     overlay: true,
     before: (app: Express) => {
       // Late bind the reference to the module
-      app.use((...args) => require(path("./server/app"))(...args));
+      app.use((...args) => require(path("./server/app")).default(...args));
       // So we can hack in auto reloading
-      require("./utils/watch-module-cache")(path("./server"));
+      require("./utils/watch-module-cache").default(path("./server"));
     }
   },
   performance: {

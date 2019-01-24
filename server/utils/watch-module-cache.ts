@@ -1,10 +1,6 @@
-const Watchpack = require("watchpack");
+import Watchpack from "watchpack";
 
-/**
- * @param  {string} dir
- * @return {void}
- */
-module.exports = function watchModuleCache(dir) {
+export default function watchModuleCache(dir: string): void {
   console.log(`Watching for changes in ${dir}`);
 
   new Watchpack({
@@ -17,4 +13,4 @@ module.exports = function watchModuleCache(dir) {
       });
     })
     .watch([], [dir], Date.now() - 1000);
-};
+}
