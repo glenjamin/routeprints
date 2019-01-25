@@ -1,5 +1,7 @@
-const initialState = {};
+import { combineReducers } from "redux";
 
-export function rootReducer(state: any = initialState, action: any) {
-  return state;
-}
+import strava from "./strava";
+
+export const rootReducer = combineReducers({
+  strava
+});

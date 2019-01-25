@@ -1,21 +1,37 @@
 require("dotenv").config();
 
 const config = {
-  port: process.env.PORT || "1987",
-  stravaBaseURL: "https://www.strava.com/",
-  clientId: requireInProduction("CLIENT_ID"),
-  clientSecret: requireInProduction("CLIENT_SECRET")
+  port: lookupConfigFromEnvironment("PORT", { defaultValue: "1987" }),
+  stravaBaseURL: lookupConfigFromEnvironment("STRAVA_URL", {
+    defaultValue: "https://www.strava.com/"
+  }),
+  clientId: lookupConfigFromEnvironment("CLIENT_ID", {
+    requireInProduction: true
+  }),
+  clientSecret: lookupConfigFromEnvironment("CLIENT_SECRET", {
+    requireInProduction: true
+  }),
+  cookieSecret: lookupConfigFromEnvironment("COOKIE_SECRET", {
+    requireInProduction: true,
+    defaultValue: "good-enough-for-dev"
+  })
 };
 
-function requireInProduction(envVarName: string): string {
-  const val = process.env[envVarName];
+function lookupConfigFromEnvironment(
+  name: string,
+  {
+    requireInProduction,
+    defaultValue
+  }: { requireInProduction?: boolean; defaultValue?: string }
+): string {
+  const val = process.env[name];
   if (val !== undefined) {
     return val;
   }
-  if (process.env.NODE_ENV === "production") {
-    throw new Error(`Missing ${envVarName} environment variable`);
+  if (requireInProduction && process.env.NODE_ENV === "production") {
+    throw new Error(`Missing ${name} environment variable`);
   }
-  return "";
+  return defaultValue || "";
 }
 
 export default config;
