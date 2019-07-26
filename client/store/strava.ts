@@ -1,32 +1,40 @@
-import { Reducer } from "redux";
-import { Action } from "../connection";
+import {
+  action,
+  Action,
+  defineInterceptor,
+  defineReducer
+} from "../connection";
 
-type Athlete = {
-  id: number;
-};
+import * as remote from "../remote";
+
+import * as stravaApi from "../strava-api";
 
 const initialState = {
-  connected: false,
-  athlete: null as Athlete | null
+  connection: remote.initial(),
+  athlete: null as stravaApi.Athlete | null
 };
 type State = typeof initialState;
 export type Actions =
+  | Action<"STRAVA_CONNECTING">
   | Action<"STRAVA_CONNECTED">
-  | Action<"STRAVA_ATHLETE", Athlete>;
+  | Action<"STRAVA_ATHLETE", stravaApi.Athlete>
+  | Action<"STRAVA_ATHLETE_ERROR", string>;
 
-const reducer: Reducer<State, Actions> = function reducer(
-  state = initialState,
-  action
-) {
-  switch (action.type) {
-    case "STRAVA_CONNECTED":
-      return Object.assign({}, state, {
-        connected: true,
-        athlete: { id: 1 }
-      });
-    case "STRAVA_ATHLETE":
-      return Object.assign({}, state, { athlete: action.payload });
+export const interceptor = defineInterceptor<State, Actions>({
+  STRAVA_CONNECTED: ({ dispatch }) => {
+    stravaApi
+      .getAthlete()
+      .then(athlete => dispatch(action("STRAVA_ATHLETE", athlete)))
+      .catch(err => dispatch(action("STRAVA_ATHLETE_ERROR", err.message)));
   }
-  return state;
-};
-export default reducer;
+});
+
+export const reducer = defineReducer<State, Actions>(initialState, {
+  STRAVA_CONNECTING: state => copy(state, { connection: remote.loading() }),
+  STRAVA_CONNECTED: state => copy(state, { connection: remote.ok(true) }),
+  STRAVA_ATHLETE: (state, athlete) => copy(state, { athlete })
+});
+
+function copy<T extends object>(a: T, b: Partial<T>): T {
+  return Object.assign({}, a, b);
+}

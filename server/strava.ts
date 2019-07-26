@@ -50,7 +50,7 @@ routes.use(
         return;
       }
 
-      // Strip middleware's mount path
+      // Strip middleware's mount path, replace with target api prefix
       const proxyReqAny: any = proxyReq;
       proxyReqAny.path = proxyReqAny.path.replace(req.baseUrl, "/api/v3");
 

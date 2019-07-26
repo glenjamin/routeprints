@@ -1,0 +1,38 @@
+graph LR
+action --> redux
+aA[actions A] --> action
+aA[actions A] --> mA[models A]
+aB[actions B] --> action
+ca[combined actions] --> aA[actions A]
+ca[combined actions] --> aB[actions B]
+ci[combined interceptors] --> iA[interceptor A]
+ci[combined interceptors] --> iB[interceptor B]
+crx[combined reactions] --> rxA[reaction A]
+crx[combined reactions] --> rxB[reaction B]
+cr[combined reducers] --> rA[reducer A]
+cr[combined reducers] --> rB[reducer B]
+cs[combined state] --> sA[state A]
+cs[combined state] --> sB[state B]
+component[connected component] --> dh[dispatch helper]
+component --> cs[combined state]
+provider --> store
+dh[dispatch helper] --> ca[combined actions]
+iA[interceptor A] --> api[api client]
+iA[interceptor A] --> dh[dispatch helper]
+iA[interceptor A] --> im[interception middleware]
+iB[interceptor B] --> dh[dispatch helper]
+iB[interceptor B] --> im[interception middleware]
+rxA[reaction A] --> aA[actions A]
+rA[reducer A] --> aA[actions A]
+rA[reducer A] --> rh[reducer helper]
+rA[reducer A] --> redux
+rA[reducer A] --> sA[state A]
+rB[reducer B] --> rh[reducer helper]
+rB[reducer B] --> redux
+rB[reducer B] --> sB[state B]
+sA[state A] --> mA[models A]
+store --> ci[combined interceptors]
+store --> cr[combined reducers]
+store --> crx
+store --> im[interception middleware]
+store --> redux

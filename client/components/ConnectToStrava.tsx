@@ -21,6 +21,7 @@ const ConnectToStrava: React.FC<Props> = ({ dispatch }) => {
   const [error, setError] = React.useState(null as string | null);
   function connectToStrava() {
     setError(null);
+    dispatch(action("STRAVA_CONNECTING"));
     window.open("/strava/auth/connect");
     window.stravaOAuth2Callback = data => {
       if ("error" in data) {
