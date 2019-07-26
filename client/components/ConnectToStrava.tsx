@@ -1,49 +1,48 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { Button, Image } from "react-bootstrap";
+import { Button, Image, Alert } from "react-bootstrap";
+
+import { Dispatch, action } from "../connection";
+import { OauthCallbackResult } from "../../common/oauth";
 
 import image from "../images/btn_strava_connectwith_orange@2x.png";
 
 declare global {
   interface Window {
-    stravaOAuth2Callback: (data: any) => void;
+    stravaOAuth2Callback: (data: OauthCallbackResult) => void;
   }
 }
 
 type Props = {
-  stravaConnected: (auth: any) => void;
+  dispatch: Dispatch;
 };
-const ConnectToStrava: React.FC<Props> = ({ stravaConnected }) => {
+const ConnectToStrava: React.FC<Props> = ({ dispatch }) => {
+  const [error, setError] = React.useState(null as string | null);
   function connectToStrava() {
+    setError(null);
+    dispatch(action("STRAVA_CONNECTING"));
+    window.open("/strava/auth/connect");
     window.stravaOAuth2Callback = data => {
-      if (data.error) {
-        console.warn(data);
+      if ("error" in data) {
+        setError(data.error);
         return;
       }
-      stravaConnected(data);
+      dispatch(action("STRAVA_CONNECTED"));
     };
-    window.open("/strava/auth/connect");
   }
   return (
-    <Button variant="link" onClick={connectToStrava}>
-      <Image fluid src={image} />
-    </Button>
+    <>
+      <Button variant="link" onClick={connectToStrava}>
+        <Image fluid src={image} />
+      </Button>
+      {error && (
+        <Alert variant="danger">Error connecting to Strava: {error}</Alert>
+      )}
+    </>
   );
 };
 
-function stravaConnected(payload: any) {
-  return {
-    type: "STRAVA_CONNECTED",
-    payload
-  };
-}
-
-const ConnectedConnectToStrava = connect(
-  null,
-  {
-    stravaConnected
-  }
-)(ConnectToStrava);
+const ConnectedConnectToStrava = connect()(ConnectToStrava);
 
 export { ConnectedConnectToStrava as ConnectToStrava };

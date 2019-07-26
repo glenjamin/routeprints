@@ -82,10 +82,18 @@ module.exports = {
     stats,
     overlay: true,
     before: (app: Express) => {
-      // Late bind the reference to the module
-      app.use((...args) => require(path("./server/app")).default(...args));
-      // So we can hack in auto reloading
-      require("./utils/watch-module-cache").default(path("./server"));
+      require("hot-module-replacement")({
+        ignore: /node_modules/
+      });
+      let serverApp = require("./app").default;
+      if (module.hot) {
+        module.hot.accept("./app", () => {
+          console.log("Hot reloading express server app");
+          serverApp = require("./app").default;
+        });
+      }
+
+      app.use((...args) => serverApp(...args));
     }
   },
   performance: {

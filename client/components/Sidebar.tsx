@@ -8,7 +8,7 @@ type Props = {
 };
 
 const Sidebar: React.FC<Props> = ({ strava }) => {
-  return <div>{!strava ? <ConnectToStrava /> : <p>OK</p>}</div>;
+  return <div>{!strava.athlete ? <ConnectToStrava /> : <p>OK</p>}</div>;
 };
 
 function mapStateToProps(state: any) {
